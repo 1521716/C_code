@@ -1,0 +1,288 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+//结构体定义
+typedef struct Student {
+	int ID;
+	char name[20];
+	double score;
+}Student;
+//清屏
+void clear();
+//打印菜单
+void menu();
+//输入学生数据
+void Inputdata(Student *data ,int *count);
+//显示学生数据
+void Putdata(Student* data, int *count);
+//用学号查找学生数据
+void Search_ID(Student* data, int* count);
+//用姓名查找学生数据
+void Search_name(Student* data, int* count);
+//查找学生数据
+void Searchdata(Student* data, int* count);
+//按照学号排序
+void Sort_ID(Student* data, int* count);
+//按照成绩排序
+void Sort_score(Student* data, int* count);
+//排序
+void Sortdata(Student* data, int* count);
+//统计
+void Statistics(Student* data, int* count);
+int main()
+{
+	int input = 0;
+	Student data[100] = { 0 };
+	int count = 0;
+	do{
+		menu();
+		scanf("%d", &input);
+		switch (input)
+		{
+		case 1:
+			Inputdata(data, &count);
+			break;
+		case 2:
+			Putdata(data, &count);
+			break;
+		case 3:
+			Searchdata(data,&count);
+			break;
+		case 4:
+			Sortdata(data, &count);
+			break;
+		case 5:
+			break;
+		case 0:
+			printf("程序结束！\n");
+			break;
+		default:
+			printf("输入选项不合法！请重新输入...\n");
+			break;
+		}
+	} while (input);
+	return 0;
+}
+void clear()
+{
+	system("pause");
+	system("cls");
+}
+void menu()
+{
+	printf("*******************************************************************\n");
+	printf("********1.录入   2.显示   3.查找   4.排序   5.统计   0.退出********\n");
+	printf("*******************************************************************\n");
+	printf("请输入选择项：");
+}
+void Inputdata(Student* data, int *count)
+{
+	int n = 0,sign1 = 0;
+	Student* tem = data;
+	printf("请输入新增加的学生个数：");
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++)
+	{
+		(*count)++;
+		do {
+			sign1 = 0;
+			printf("请输入第%d个学生的学号：", *count);
+			scanf("%d", &(tem->ID));
+			for (int j = 0; j < *count; j++)
+			{
+				if (tem->ID ==(data+j-1)->ID )
+				{
+					printf("该学号已存在，请重新输入！\n");
+					sign1 = 1;
+					break;
+				}
+			}
+		} while (sign1);
+		printf("请输入第%d个学生的姓名：",*count);
+		scanf("%s", tem->name);
+		printf("请输入第%d个学生的C语言成绩：",*count);
+		scanf("%lf", &(tem->score));
+		tem++;
+	}
+	clear();
+}
+void Putdata(Student* data, int *count)
+{
+	printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+	for (int i = 0; i < *count; i++)
+	{
+		printf("%-8d%-8s%.2lf\n", (data+i)->ID ,(data+i)->name,(data+i)->score);
+	}
+	clear();
+}
+void Search_ID(Student* data, int* count)
+{
+	int search = 0,result = 0;
+	printf("请输入要查找的学生的学号：");
+	scanf("%d", &search);
+	for (int i = 0; i < *count; i++)
+	{
+		if (search == (data + i)->ID)
+		{
+			if (i == 0)
+			{
+				printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+				printf("%-8d%-8s%.2lf\n", data->ID, data->name, data->score);
+				clear();
+				return;
+			}
+			else
+				result = i;
+			break;
+		}
+	}
+	printf("查找结果：\n");
+	if (result)
+	{
+		printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+		printf("%-8d%-8s%.2lf\n", (data + result)->ID, (data + result)->name, (data + result)->score);
+	}
+	else
+		printf("该学生信息未找到！\n");
+	clear();
+}
+void Search_name(Student* data, int* count)
+{
+	char search_name[20] = { 0 };
+	int result = 0;
+	printf("请输入要查找的学生的姓名：");
+	scanf("%s", &search_name);
+	for (int i = 0; i < *count; i++)
+	{
+		if (strcmp(search_name,(data+i)->name)==0)
+		{
+			if (i == 0)
+			{
+				printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+				printf("%-8d%-8s%.2lf\n", data->ID, data->name, data->score);
+				clear();
+				return;
+			}
+			else
+				result = i;
+			break;
+		}
+	}
+	printf("查找结果：\n");
+	if (result)
+	{
+		printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+		printf("%-8d%-8s%.2lf\n", (data + result)->ID, (data + result)->name, (data + result)->score);
+	}
+	else
+		printf("该学生信息未找到！\n");
+	clear();
+}
+void Searchdata(Student* data, int* count)
+{
+	int select = 0;
+	do {
+		printf("1-按学号查找    2-按姓名查找    0-返回:");
+		scanf("%d", &select);
+		switch (select)
+		{
+		case 1:
+			Search_ID(data,count);
+			break;
+		case 2:
+			Search_name(data, count);
+			break;
+		case 0:
+			printf("查找程序结束！\n");
+			clear();
+			break;
+		default:
+			printf("选项输入错误，请重新输入！\n");
+			break;
+		}
+	} while (select);
+}
+void Sort_ID(Student* data, int* count)
+{
+	printf("排序后的结果为：\n");
+	for (int i = 0; i < *count - 1; i++)
+	{
+		for (int j = 0; j < *count - 1 - i; j++)
+		{
+			if ((data + j)->ID > (data + j + 1)->ID)
+			{
+				int tem_ID = (data + j)->ID;
+				(data + j)->ID = (data + j + 1)->ID;
+				(data + j + 1)->ID = tem_ID;
+				char tem_name[20] = { 0 };
+				strcpy(tem_name, (data + j)->name);
+				strcpy((data + j)->name, (data + j + 1)->name);
+				strcpy((data + j + 1)->name, tem_name);
+				double tem_score = (data + j)->score;
+				(data + j)->score = (data + j + 1)->score;
+				(data + j + 1)->score = tem_score;
+			}
+		}
+	}
+	Putdata(data,count);
+}
+void Sort_score(Student* data, int* count)
+{
+	printf("排序后的结果为：\n");
+	for (int i = 0; i < *count - 1; i++)
+	{
+		for (int j = 0; j < *count - 1 - i; j++)
+		{
+			if ((data + j)->score < (data + j + 1)->score)
+			{
+				int tem_ID = (data + j)->ID;
+				(data + j)->ID = (data + j + 1)->ID;
+				(data + j + 1)->ID = tem_ID;
+				char tem_name[20] = { 0 };
+				strcpy(tem_name, (data + j)->name);
+				strcpy((data + j)->name, (data + j + 1)->name);
+				strcpy((data + j + 1)->name, tem_name);
+				double tem_score = (data + j)->score;
+				(data + j)->score = (data + j + 1)->score;
+				(data + j + 1)->score = tem_score;
+			}
+		}
+	}
+	Putdata(data, count);
+}
+void Sortdata(Student* data, int* count)
+{
+	int select = 0;
+	do {
+		printf("1-按学号（升序）   2-按成绩（降序）   0-返回:");
+		scanf("%d", &select);
+		switch (select)
+		{
+		case 1:
+			Sort_ID(data, count);
+			break;
+		case 2:
+			Sort_score(data, count);
+			break;
+		case 0:
+			printf("排序程序结束！\n");
+			clear();
+			break;
+		default:
+			printf("选项输入错误，请重新输入！\n");
+			break;
+		}
+	} while (select);
+}
+void Statistics(Student* data, int* count)
+{
+	double max = data->score, min = data->score, sum = 0;
+
+	printf("**********************************************************\n");
+	printf("成绩统计结果：\n");
+	printf("%-14s%d\n", "学生总数：", *count);
+	printf("%-14s%d\n", "学生总数：", *count);
+	printf("%-14s%d\n", "学生总数：", *count);
+	printf("%-14s%d\n", "学生总数：", *count);
+}
