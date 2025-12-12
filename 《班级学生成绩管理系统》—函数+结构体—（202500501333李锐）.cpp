@@ -53,6 +53,7 @@ int main()
 			Sortdata(data, &count);
 			break;
 		case 5:
+			Statistics(data,&count);
 			break;
 		case 0:
 			printf("程序结束！\n");
@@ -76,9 +77,9 @@ void menu()
 	printf("*******************************************************************\n");
 	printf("请输入选择项：");
 }
-void Inputdata(Student* data, int *count)
+void Inputdata(Student* data, int* count)
 {
-	int n = 0,sign1 = 0;
+	int n = 0, sign1 = 0;
 	Student* tem = data;
 	printf("请输入新增加的学生个数：");
 	scanf("%d", &n);
@@ -91,7 +92,7 @@ void Inputdata(Student* data, int *count)
 			scanf("%d", &(tem->ID));
 			for (int j = 0; j < *count; j++)
 			{
-				if (tem->ID ==(data+j-1)->ID )
+				if (tem->ID == (data + j - 1)->ID)
 				{
 					printf("该学号已存在，请重新输入！\n");
 					sign1 = 1;
@@ -99,14 +100,23 @@ void Inputdata(Student* data, int *count)
 				}
 			}
 		} while (sign1);
-		printf("请输入第%d个学生的姓名：",*count);
+		printf("请输入第%d个学生的姓名：", *count);
 		scanf("%s", tem->name);
-		printf("请输入第%d个学生的C语言成绩：",*count);
-		scanf("%lf", &(tem->score));
+		do {
+			sign1 = 0;
+			printf("请输入第%d个学生的C语言成绩：", *count);
+			scanf("%lf", &(tem->score));
+			if (tem->score < 0 || tem->score>100)
+			{
+				printf("成绩输入不合法，请重新输入！\n");
+				sign1 = 1;
+			}
+		} while (sign1);
 		tem++;
 	}
 	clear();
 }
+
 void Putdata(Student* data, int *count)
 {
 	printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
@@ -278,11 +288,41 @@ void Sortdata(Student* data, int* count)
 void Statistics(Student* data, int* count)
 {
 	double max = data->score, min = data->score, sum = 0;
-
+	for (int i = 0; i < *count; i++)
+	{
+		if (max < (data + i)->score)
+			max = (data + i)->score;
+		if (min > (data + i)->score)
+			min = (data + i)->score;
+		sum += (data + i)->score;
+	}
 	printf("**********************************************************\n");
 	printf("成绩统计结果：\n");
-	printf("%-14s%d\n", "学生总数：", *count);
-	printf("%-14s%d\n", "学生总数：", *count);
-	printf("%-14s%d\n", "学生总数：", *count);
-	printf("%-14s%d\n", "学生总数：", *count);
+	printf("%-18s%d\n", "学生总数：", *count);
+	printf("%-18s%.2lf\n", "最高分：", max);
+	printf("%-18s%.2lf\n", "最低分：", min);
+	printf("%-18s%.2lf\n", "平均成绩：", sum/(*count));
+	int A = 0, B = 0, C = 0, D = 0, E = 0;
+	for (int j = 0; j < *count; j++)
+	{
+		if ((data + j)->score >= 90 && (data + j)->score <= 100)
+			A++;
+		else if ((data + j)->score >= 80)
+			B++;
+		else if ((data + j)->score >= 70)
+			C++;
+		else if ((data + j)->score >= 60)
+			D++;
+		else
+			E++;
+	}
+	printf("%s", "成绩分布情况：\n");
+	printf("%8s%8s%8s\n", "分数段", "人数", "百分比");
+	printf("%8s%8d%8.2lf%%\n", "100-90", A, 100.0*A/(*count));
+	printf("%8s%8d%8.2lf%%\n", "89-80", B, 100.0 * B / (*count));
+	printf("%8s%8d%8.2lf%%\n", "79-70", C, 100.0 * C / (*count));
+	printf("%8s%8d%8.2lf%%\n", "69-60", D, 100.0 * D / (*count));
+	printf("%8s%8d%8.2lf%%\n", "59-0", E, 100.0 * E / (*count));
+	printf("**********************************************************\n");
+	clear();
 }
