@@ -19,6 +19,9 @@ void clear()
 	system("cls");
 }
 
+//增加静态本地变量，储存已录入学生数量
+static int k = 0; 
+
 //打印菜单
 void menu()
 {
@@ -41,13 +44,16 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 	scanf("%d", &n);
 	for (int i = 0; i < n; i++)
 	{
+		//用静态本地变量显示学生数量
+		k++;
+		
 		//创建新节点
 		struct LinkNode* newStudent = (struct LinkNode*)malloc(sizeof(struct LinkNode));
 
 		//输入学号，并判断学号是否已经存在
 		do {
 			sign = 0;
-			printf("请输入第%d个学生的学号：", i + 1);
+			printf("请输入第%d个学生的学号：", k);
 			scanf("%d", &newStudent->ID);
 			while (pHead != NULL)
 			{
@@ -62,14 +68,14 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 		} while (sign);
 
 		//输入姓名
-		printf("请输入第%d个学生的姓名：",i+1);
+		printf("请输入第%d个学生的姓名：",k);
 		scanf("%s", newStudent->name);
 		while (getchar() != '\n');
 
 		//输入成绩，并判断成绩是否合法
 		do {
 			sign = 0;
-			printf("请输入第%d个学生的C语言成绩：", i + 1);
+			printf("请输入第%d个学生的C语言成绩：", k);
 			scanf("%lf", &newStudent->score);
 			if (newStudent->score < 0 || newStudent->score >100)
 			{
