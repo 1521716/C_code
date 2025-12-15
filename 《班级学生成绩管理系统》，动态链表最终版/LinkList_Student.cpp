@@ -123,12 +123,20 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev->next = pCurrent->next;
 					free(pCurrent);
 					printf("删除成功！\n");
+					//更新指针变量
+					pPrev = Student;
+					pCurrent = Student->next;
+					ptem1 = Student->next;
 					return;
 				}
 				pPrev = pCurrent;
 				pCurrent = pCurrent->next;
 			}
 			printf("未找到要删除的学号！\n");
+			//更新指针变量
+			pPrev = Student;
+			pCurrent = Student->next;
+			ptem1 = Student->next;
 			break;
 		case 2:
 			//按照姓名删除
@@ -143,12 +151,20 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev->next = pCurrent->next;
 					free(pCurrent);
 					printf("删除成功！\n");
+					//更新指针变量
+					pPrev = Student;
+					pCurrent = Student->next;
+					ptem1 = Student->next;
 					return;
 				}
 				pPrev = pCurrent;
 				pCurrent = pCurrent->next;
 			}
 			printf("未找到要删除的学生！\n");
+			//更新指针变量
+			pPrev = Student;
+			pCurrent = Student->next;
+			ptem1 = Student->next;
 			break;
 		case 3:
 			//询问用户是否清空
@@ -428,7 +444,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 		n++;
 		pHead = pHead->next;
 	}
-	//printf("%d!!!!!!!\n", n);
 
 	//重置指针
 	pHead = Student->next;
@@ -467,9 +482,9 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 						arr_score[j + 1] = tem03;
 						sign = 0;
 					}
-					if (sign)
-						break;
 				}
+				if (sign)
+					break;
 			}
 
 			//将按照ID排序的数组赋值给链表
@@ -481,6 +496,8 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 				pHead = pHead->next;
 			}
 			printf("按学号升序排序成功！\n");
+			//重置指针
+			pHead = Student->next;
 			return;
 			break;
 		case 2:
@@ -504,9 +521,9 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 						arr_score[j + 1] = tem03;
 						sign = 0;
 					}
-					if (sign)
-						break;
 				}
+				if (sign)
+					break;
 			}
 
 			//将按照分数排序的数组赋值给链表
@@ -518,6 +535,8 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 				pHead = pHead->next;
 			}
 			printf("按成绩降序排序成功！\n");
+			//重置指针
+			pHead = Student->next;
 			return;
 			break;
 		case 0:
