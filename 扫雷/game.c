@@ -83,37 +83,62 @@ void Output_minemap(int minemap[N+1][N+1])
 //玩家输入
 int Inputbyplayer(int minemap[N+1][N+1],char playermap[N-1][N-1])
 {
-	//玩家输入 
-	printf("请输入你要检查的位置（x,y）:");
-	int x,y;
-	scanf("%d %d",&x,&y);
-	
-	//判断是不是雷
-	if(minemap[x][y]==1) 
+	printf("请输入操作数（1-检查  2-标记）：");
+	int select = 0;
+	scanf("%d", &select);
+	switch (select)
 	{
-		Output_minemap(minemap);
-		printf("game over!\n");
-		clear();
-		return 0;
-	}
-	else
-	{
-		int n = 0;
-		for (int i = x - 1; i <= x + 1; i++)
+	case 1:
+		//玩家输入检查位置
+		printf("请输入你要检查的位置（x,y）:");
+		int x, y;
+		scanf("%d %d", &x, &y);
+
+		//判断是不是雷
+		if (minemap[x][y] == 1)
 		{
-			for (int j = y - 1; j <= y + 1; j++)
+			Output_minemap(minemap);
+			printf("game over!\n");
+			clear();
+			return 0;
+		}
+		else
+		{
+			int n = 0;
+			for (int i = x - 1; i <= x + 1; i++)
 			{
-				if (minemap[i][j] == 1)
+				for (int j = y - 1; j <= y + 1; j++)
 				{
-					n++;
+					if (minemap[i][j] == 1)
+					{
+						n++;
+					}
 				}
 			}
+			playermap[x - 1][y - 1] = (char)(n + '0');
+			system("cls");
+			return 1;
 		}
-		playermap[x][y] = (char )(n+'0');
-		Output_playermsp(playermap);
-		clear();
+		break;
+	case 2:
+		//玩家输入要标记位置
+		printf("请输入你要检查的位置（x,y）:");
+		int p, q;
+		scanf("%d %d", &p, &q);
+
+		//判断是不是未检查过的位置
+		if (playermap[p - 1][q - 1] == '*')
+		{
+			playermap[p - 1][q - 1] = '#';
+			system("cls");
+			return 1;
+		}
+		else
+			printf("该位置已经被检查！标记失败！\n");
 		return 1;
+		break;
 	}
+	
 }
 
 //判断雷是否排尽
@@ -150,12 +175,11 @@ void game()
 	Inputmine(minemap,&mine);
 	Init_playermap(playermap);
 	
-	//打印玩家视角
-	Output_playermsp(playermap);
-	
 	int result1 = 1,result2 = 1;
 	do
 	{
+		//打印玩家视角
+		Output_playermsp(playermap);
 		//玩家输入
 		result1 = Inputbyplayer(minemap, playermap);
 		//判断非雷位置是否排尽
