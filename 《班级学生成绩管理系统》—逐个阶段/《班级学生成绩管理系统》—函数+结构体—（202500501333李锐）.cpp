@@ -114,6 +114,7 @@ void Inputdata(Student* data, int* count)
 		} while (sign1);
 		tem++;
 	}
+	printf("数据录入已成功！\n");
 	clear();
 }
 
