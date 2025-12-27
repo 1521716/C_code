@@ -316,17 +316,18 @@ void Deletenum_List(List* LinkList, List** phead, List** ptail)
 //反转链表
 List*  Shift(List* LinkList, List** phead, List** ptail)
 {
-	while (LinkList->next == NULL || LinkList->next->next == NULL)
+	if(LinkList->next == NULL || LinkList->next->next == NULL)
 	{
 		printf("链表长度过短，无法反转！\n");
 		return LinkList;
 	}
 	//设置三个辅助针
 	List* pre = NULL;
-	List* cur = (*phead)->next;
+	List* cur = *phead;
 	List* aft = NULL;
 	//设置新的头
 	List* newLinkList = (List*)malloc(sizeof(List));
+	//开始反向连接
 	while (cur!=NULL)
 	{
 		aft = cur->next;
@@ -338,7 +339,11 @@ List*  Shift(List* LinkList, List** phead, List** ptail)
 
 	//更新头尾针
 	*phead = newLinkList;
-	*ptail = LinkList->next;
+	while (pre->next != NULL)
+	{
+		pre = pre->next;
+	}
+	*ptail = pre;
 	free(LinkList);
 	LinkList = NULL;
 
