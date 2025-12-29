@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
 
-//½ÚµãÉùÃ÷
+//é“¾è¡¨ç»“æ„ä½“
 struct LinkNode {
 	int ID;
 	char name[20];
@@ -14,26 +14,26 @@ struct LinkNode {
 
 void clear();
 
-//³õÊ¼»¯Á´±í
+//é“¾è¡¨åˆå§‹åŒ–
 struct LinkNode* Init_LinkList();
 
-//´òÓ¡²Ëµ¥
+//æ‰“å°èœå•
 void menu();
 
-//1-Â¼Èë
-void Input_Studentdata(struct LinkNode *Student, struct LinkNode* pHead, struct LinkNode** pPear);
+//1-å½•å…¥
+void Input_Studentdata(struct LinkNode* Student, struct LinkNode* pHead, struct LinkNode** pPear);
 
-//2-É¾³ı(Çå¿Õ£©
+//2-åˆ é™¤ï¼ˆæ¸…ç©ºï¼‰
 void Remove_Studentdata(struct LinkNode* Student);
 
-//3-ĞŞ¸Ä
+//3-ä¿®æ”¹
 void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead);
 
-//4-ÏÔÊ¾
+//4-æ˜¾ç¤º
 void Output_Studentdata(struct LinkNode* Student);
 
-//5-²éÕÒ
+//5-æŸ¥æ‰¾
 void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead);
 
-//6-ÅÅĞò
-void Sort_Studentdata(struct LinkNode* Student,struct LinkNode* pHead);
+//6-æ’åº
+void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead);

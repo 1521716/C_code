@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include"LinkList_Student.h"
+#include"LinkList.h"
 //初始化链表
 struct LinkNode* Init_LinkList()
 {
@@ -7,7 +7,7 @@ struct LinkNode* Init_LinkList()
 	struct LinkNode* Student = (struct LinkNode*)malloc(sizeof(struct LinkNode));
 	//初始化头节点
 	Student->ID = 0;
-	Student->name[0] = {0};
+	Student->name[0] = { 0 };
 	Student->score = 0;
 	Student->next = NULL;
 	return Student;
@@ -20,7 +20,7 @@ void clear()
 }
 
 //增加静态本地变量，储存已录入学生数量
-static int k = 0; 
+static int k = 0;
 
 //打印菜单
 void menu()
@@ -32,7 +32,7 @@ void menu()
 }
 
 //1-录入
-void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct LinkNode** pPear)
+void Input_Studentdata(struct LinkNode* Student, struct LinkNode* pHead, struct LinkNode** pPear)
 {
 	//判断传入链表是否存在
 	if (NULL == Student)
@@ -40,13 +40,13 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 
 	//通过循环，录入所需数据
 	printf("请输入新增加的学生个数：");
-	int n = 0,sign = 0;
+	int n = 0, sign = 0;
 	scanf("%d", &n);
 	for (int i = 0; i < n; i++)
 	{
 		//用静态本地变量显示学生数量
 		k++;
-		
+
 		//创建新节点
 		struct LinkNode* newStudent = (struct LinkNode*)malloc(sizeof(struct LinkNode));
 
@@ -68,7 +68,7 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 		} while (sign);
 
 		//输入姓名
-		printf("请输入第%d个学生的姓名：",k);
+		printf("请输入第%d个学生的姓名：", k);
 		scanf("%s", newStudent->name);
 		while (getchar() != '\n');
 
@@ -83,7 +83,7 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 				sign = 1;
 			}
 		} while (sign);
-		
+
 		newStudent->next = NULL;
 
 		//将新节点连接到链表
@@ -106,14 +106,14 @@ void Remove_Studentdata(struct LinkNode* Student)
 	struct LinkNode* pCurrent = Student->next;
 	struct LinkNode* ptem1 = Student->next;
 
-	int select = 0,select1 = 0;;
+	int select = 0, select1 = 0;;
 	do {
 		//菜单
 		printf("*******************************************************\n");
 		printf("***1-按学号删除    2-按姓名删除      3-清空   0-退出***\n");
 		printf("*******************************************************\n");
 		printf("请输入你的选择>");
-		
+
 		scanf("%d", &select);
 		int remove_ID = 0; char remove_name[20] = { 0 };
 		switch (select)
@@ -146,7 +146,7 @@ void Remove_Studentdata(struct LinkNode* Student)
 			break;
 		case 2:
 			//按照姓名删除
-			
+
 			printf("请输入你要删除的学生姓名：");
 			scanf("%s", remove_name);
 			while (getchar() != '\n');
@@ -185,7 +185,7 @@ void Remove_Studentdata(struct LinkNode* Student)
 			switch (select1)
 			{
 			case 1:
-				
+
 				//开始清空
 				Student->next = NULL;
 				while (ptem1 != NULL)
@@ -219,7 +219,7 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 {
 	if (Student == NULL)
 		return;
-	
+
 	int select = 0;
 
 	do {
@@ -469,10 +469,10 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 		case 1:
 
 			//按学号给数组排序(冒泡)
-			for (int i = 0; i < n-1; i++)
+			for (int i = 0; i < n - 1; i++)
 			{
 				int sign = 1;
-				for (int j = 0; j < n-1 - i; j++)
+				for (int j = 0; j < n - 1 - i; j++)
 				{
 					if (arr_ID[j] > arr_ID[j + 1])
 					{
@@ -508,10 +508,10 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			break;
 		case 2:
 			//按成绩给数组排序(冒泡)
-			for (int i = 0; i < n-1; i++)
+			for (int i = 0; i < n - 1; i++)
 			{
 				int sign = 1;
-				for (int j = 0; j < n-1 - i; j++)
+				for (int j = 0; j < n - 1 - i; j++)
 				{
 					if (arr_score[j] < arr_score[j + 1])
 					{
@@ -552,5 +552,5 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			printf("输入选择错误，请重新选择！\n");
 		}
 	} while (select);
-	
+
 }

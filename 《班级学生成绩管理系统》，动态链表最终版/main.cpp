@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include"LinkList_Student.h"
+#include"LinkList.h"
 int main()
 {
 	int input = 0;
@@ -18,7 +18,7 @@ int main()
 		switch (input)
 		{
 		case 1:
-			Input_Studentdata(Student,pHead,&pPear);
+			Input_Studentdata(Student, pHead, &pPear);
 			clear();
 			break;
 		case 2:
@@ -26,7 +26,7 @@ int main()
 			clear();
 			break;
 		case 3:
-			Change_Studentdata(Student,pHead);
+			Change_Studentdata(Student, pHead);
 			clear();
 			break;
 		case 4:
@@ -38,7 +38,7 @@ int main()
 			clear();
 			break;
 		case 6:
-			Sort_Studentdata(Student,pHead);
+			Sort_Studentdata(Student, pHead);
 			clear();
 			break;
 		case 0:
