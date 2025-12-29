@@ -27,7 +27,7 @@ void Input_Studentdata(struct LinkNode *Student, struct LinkNode* pHead, struct 
 void Remove_Studentdata(struct LinkNode* Student);
 
 //3-修改
-void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead);
+void Change_Studentdata(struct LinkNode* Student, struct LinkNode** pHead);
 
 //4-显示
 void Output_Studentdata(struct LinkNode* Student);
@@ -40,3 +40,6 @@ void Sort_Studentdata(struct LinkNode* Student,struct LinkNode* pHead);
 
 //加载文件数据到链表
 void Olddata(struct LinkNode* Student, struct LinkNode** pPear);
+
+//将链表录入文件
+void Inputdata(struct LinkNode* Student, struct LinkNode* pHead);

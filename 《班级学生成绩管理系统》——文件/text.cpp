@@ -29,7 +29,7 @@ int main()
 			clear();
 			break;
 		case 3:
-			Change_Studentdata(Student,pHead);
+			Change_Studentdata(Student,&pHead);
 			clear();
 			break;
 		case 4:
@@ -51,5 +51,7 @@ int main()
 			printf("选择错误，请重新选择！\n");
 		}
 	} while (input);
+	//将链表录入文件
+	Inputdata(Student, pHead);
 	return 0;
 }

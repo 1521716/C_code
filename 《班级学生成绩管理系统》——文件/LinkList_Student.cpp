@@ -45,6 +45,9 @@ void Olddata(struct LinkNode* Student, struct LinkNode** pPear)
 		(*pPear)->next = oldStudent;
 		*pPear = oldStudent;
 	}
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
 }
 
 void clear()
@@ -68,14 +71,6 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 	//判断传入链表是否存在
 	if (NULL == Student)
 		return;
-
-	//打开文件，开始写入
-	FILE* pf = fopen("Students'data.txt", "a");
-	if (pf == NULL)
-	{
-		printf("文件打开失败！\n");
-		exit(1);
-	}
 
 	//通过循环，录入所需数据
 	printf("请输入新增加的学生个数：");
@@ -129,13 +124,7 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 
 		//刷新辅助节点
 		pHead = Student;
-
-		//写入数据到文件
-		fprintf(pf, "%-8d%-8s%.2lf\n", newStudent->ID, newStudent->name, newStudent->score);
 	}
-	//关闭文件
-	fclose(pf);
-	pf = NULL;
 }
 
 //2-删除
@@ -186,15 +175,6 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev = Student;
 					pCurrent = Student->next;
 					ptem1 = Student->next;
-
-					//将新的链表写入文件
-					while (pCurrent != NULL)
-					{
-						fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-						pCurrent = pCurrent->next;
-					}
-					fclose(pf);
-					pf = NULL;
 					return;
 				}
 				pPrev = pCurrent;
@@ -224,14 +204,6 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev = Student;
 					pCurrent = Student->next;
 					ptem1 = Student->next;
-					//将新的链表写入文件
-					while (pCurrent != NULL)
-					{
-						fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-						pCurrent = pCurrent->next;
-					}
-					fclose(pf);
-					pf = NULL;
 					return;
 				}
 				pPrev = pCurrent;
@@ -291,18 +263,10 @@ void Remove_Studentdata(struct LinkNode* Student)
 }
 
 //3-修改
-void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
+void Change_Studentdata(struct LinkNode* Student, struct LinkNode** pHead)
 {
 	if (Student == NULL)
 		return;
-
-	//打开文件
-	FILE* pf = fopen("Students'data.txt", "w");
-	if (pf == NULL)
-	{
-		printf("文件错误！\n");
-		exit(1);
-	}
 
 	struct LinkNode* pCurrent = Student->next;
 	
@@ -316,7 +280,7 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 		printf("请输入你的选择>");
 
 		//选择
-		int sign = 0;
+		int sign = 0,sign1 = 0;
 		scanf("%d", &select);
 		switch (select)
 		{
@@ -324,52 +288,74 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 
 			do {
 				sign = 0;
-				pHead = Student;
+				*pHead = Student;
+				LinkNode* tem = Student;
 				//输入修改的学生学号
 				printf("请输入要修改的学生的学号：");
 				int change_ID = 0;
 				scanf("%d", &change_ID);
 
 				//通过循环遍历链表，查找节点
-				while (pHead != NULL)
+				while (tem != NULL)
 				{
 					//如果找到，开始修改
-					if (pHead->ID == change_ID)
+					if (tem->ID == change_ID)
 					{
 						printf("要修改学生信息已找到！\n");
-						printf("请输入新学号：");
-						scanf("%d", &pHead->ID);
+						
+						//输入学号，并判断学号是否已经存在
+						do {
+							*pHead = Student;
+							sign1 = 0;
+							printf("请输入新学号：");
+							scanf("%d", &tem->ID);
+							while (*pHead != NULL)
+							{
+								if ((*pHead)->ID == tem->ID&&(*pHead!=tem))
+								{
+									printf("该学号已存在，请重新输入！\n");
+									sign1 = 1;
+									break;
+								}
+								*pHead = (*pHead)->next;
+							}
+						} while (sign1);
 						printf("请输入新姓名：");
-						scanf("%s", pHead->name);
+						scanf("%s", tem->name);
 						while (getchar() != '\n');
-						printf("请输入新成绩：");
-						scanf("%lf", &pHead->score);
+						
+						//输入成绩，并判断成绩是否合法
+						do {
+							sign1 = 0;
+							printf("请输入新成绩：");
+							scanf("%lf", &tem->score);
+							if (tem->score < 0 || tem->score >100)
+							{
+								printf("成绩输入不合法，请重新输入！\n");
+								sign1 = 1;
+							}
+						} while (sign1);
 						printf("修改成功！\n");
-						//将新数据写入文件
-						while (pCurrent != NULL)
-						{
-							fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-							pCurrent = pCurrent->next;
-						}
-						fclose(pf);
-						pf = NULL;
+						*pHead = Student;
 						return;
 					}
 					//更新指针指向
-					pHead = pHead->next;
+					tem = tem->next;
 				}
 
 				//跳出循环，说明未找到
 				printf("要修改的学生信息未找到！请重新输入！\n");
 				//重置指针
-				pHead = Student;
+				*pHead = Student;
+				tem = Student;
 				sign = 1;
 			} while (sign);
 			break;
 		case 2:
 			do {
 				sign = 0;
-				pHead = Student;
+				*pHead = Student;
+				LinkNode* tem = Student;
 				//输入修改的学生姓名
 				printf("请输入要修改的学生的姓名：");
 				char change_name[20] = { 0 };
@@ -377,38 +363,58 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 				while (getchar() != '\n');
 
 				//通过循环遍历链表，查找节点
-				while (pHead != NULL)
+				while (tem != NULL)
 				{
 					//如果找到，开始修改
-					if (strcmp(pHead->name, change_name) == 0)
+					if (strcmp(tem->name, change_name) == 0)
 					{
 						printf("要修改学生信息已找到！\n");
-						printf("请输入新学号：");
-						scanf("%d", &pHead->ID);
+						
+						//输入学号，并判断学号是否已经存在
+						do {
+							*pHead = Student;
+							sign1 = 0;
+							printf("请输入新学号：");
+							scanf("%d", &tem->ID);
+							while (*pHead != NULL)
+							{
+								if ((*pHead)->ID == tem->ID&&(*pHead)!=tem)
+								{
+									printf("该学号已存在，请重新输入！\n");
+									sign1 = 1;
+									break;
+								}
+								*pHead = (*pHead)->next;
+							}
+						} while (sign1);
 						printf("请输入新姓名：");
-						scanf("%s", pHead->name);
+						scanf("%s", tem->name);
 						while (getchar() != '\n');
-						printf("请输入新成绩：");
-						scanf("%lf", &pHead->score);
+						
+						//输入成绩，并判断成绩是否合法
+						do {
+							sign1 = 0;
+							printf("请输入新成绩：");
+							scanf("%lf", &tem->score);
+							if (tem->score < 0 || tem->score >100)
+							{
+								printf("成绩输入不合法，请重新输入！\n");
+								sign1 = 1;
+							}
+						} while (sign1);
 						printf("修改成功！\n");
-						//将新数据写入文件
-						while (pCurrent != NULL)
-						{
-							fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-							pCurrent = pCurrent->next;
-						}
-						fclose(pf);
-						pf = NULL;
+						*pHead = Student;
 						return;
 					}
 					//更新指针指向
-					pHead = pHead->next;
+					tem = tem->next;
 				}
 
 				//跳出循环，说明未找到
 				printf("要修改的学生信息未找到！请重新输入！\n");
 				//重置指针
-				pHead = Student;
+				*pHead = Student;
+				tem=Student;
 				sign = 1;
 			} while (sign);
 			break;
@@ -458,7 +464,7 @@ void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 		printf("请输入你的选择>");
 
 		//选择
-		int sign = 0;
+		int sign = 0, sign1 = 1;
 		scanf("%d", &select);
 		switch (select)
 		{
@@ -469,14 +475,13 @@ void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 				printf("请输入你要查询的学号:");
 				int search_ID = 0;
 				scanf("%d", &search_ID);
-
+				printf("查询结果为：\n");
 				//循环遍历查找
 				while (pHead != NULL)
 				{
 					//找到便输出
 					if (pHead->ID == search_ID)
 					{
-						printf("查询结果为：\n");
 						printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
 						printf("%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
 						return;
@@ -485,8 +490,8 @@ void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 					pHead = pHead->next;
 				}
 
-				//循环结束，说明链表内无要查询数据
 				printf("未找到你要查询的学生信息，请重新输入！\n");
+
 				//重置指针
 				pHead = Student;
 				sign = 1;
@@ -495,31 +500,33 @@ void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 		case 2:
 			do {
 				sign = 0;
-				//输入查询学号
+				//输入查询姓名
 				printf("请输入你要查询的姓名:");
 				char search_name[20] = { 0 };
 				scanf("%s", search_name);
-
+				printf("查询结果为：\n");
 				//循环遍历查找
 				while (pHead != NULL)
 				{
 					//找到便输出
+					
 					if (strcmp(pHead->name, search_name) == 0)
 					{
-						printf("查询结果为：\n");
 						printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
 						printf("%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
-						return;
+						sign1 = 0;
 					}
 					//更新指针
 					pHead = pHead->next;
 				}
-
-				//循环结束，说明链表内无要查询数据
-				printf("未找到你要查询的学生信息，请重新输入！\n");
+				if (sign1)
+				{
+					printf("未找到你要查询的学生信息，请重新输入！\n");
+					sign = 1;
+				}
 				//重置指针
 				pHead = Student;
-				sign = 1;
+				return;
 			} while (sign);
 			break;
 		case 0:
@@ -541,14 +548,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 
 	if (Student == NULL)
 		return;
-
-	//打开文件
-	FILE* pf = fopen("Students'data.txt", "w");
-	if (pf == NULL)
-	{
-		printf("文件错误！\n");
-		exit(1);
-	}
 
 	//因为动态数组还没学习，此处用静态数组
 	int n = 0;
@@ -617,14 +616,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			//重置指针
 			pHead = Student->next;
 
-			//将新数据写入文件
-			while (pHead != NULL)
-			{
-				fprintf(pf, "%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
-				pHead = pHead->next;
-			}
-			fclose(pf);
-			pf = NULL;
 			return;
 			break;
 		case 2:
@@ -665,14 +656,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			//重置指针
 			pHead = Student->next;
 
-			//将新数据写入文件
-			while (pHead != NULL)
-			{
-				fprintf(pf, "%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
-				pHead = pHead->next;
-			}
-			fclose(pf);
-			pf = NULL;
 			return;
 			break;
 		case 0:
@@ -682,5 +665,20 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			printf("输入选择错误，请重新选择！\n");
 		}
 	} while (select);
-	
+}
+
+//将链表录入文件
+void Inputdata(struct LinkNode* Student, struct LinkNode* pHead)
+{
+	FILE* pf = fopen("Students'data.txt", "w");
+	LinkNode* tem = pHead->next;
+	while (tem != NULL)
+	{
+		//写入数据到文件
+		fprintf(pf, "%-8d%-8s%.2lf\n", tem->ID, tem->name, tem->score);
+		tem = tem->next;
+	}
+	fclose(pf);
+	pf = NULL;
+	printf("数据录入文件成功！\n");
 }
