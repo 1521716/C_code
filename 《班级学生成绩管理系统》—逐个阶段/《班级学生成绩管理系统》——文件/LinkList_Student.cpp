@@ -45,6 +45,9 @@ void Olddata(struct LinkNode* Student, struct LinkNode** pPear)
 		(*pPear)->next = oldStudent;
 		*pPear = oldStudent;
 	}
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
 }
 
 void clear()
@@ -68,14 +71,6 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 	//判断传入链表是否存在
 	if (NULL == Student)
 		return;
-
-	/*//打开文件，开始写入
-	FILE* pf = fopen("Students'data.txt", "a");
-	if (pf == NULL)
-	{
-		printf("文件打开失败！\n");
-		exit(1);
-	}*/
 
 	//通过循环，录入所需数据
 	printf("请输入新增加的学生个数：");
@@ -129,13 +124,7 @@ void Input_Studentdata(struct LinkNode* Student,struct LinkNode* pHead,struct Li
 
 		//刷新辅助节点
 		pHead = Student;
-
-		/*//写入数据到文件
-		fprintf(pf, "%-8d%-8s%.2lf\n", newStudent->ID, newStudent->name, newStudent->score);*/
 	}
-	/*//关闭文件
-	fclose(pf);
-	pf = NULL;*/
 }
 
 //2-删除
@@ -186,15 +175,6 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev = Student;
 					pCurrent = Student->next;
 					ptem1 = Student->next;
-
-					/*//将新的链表写入文件
-					while (pCurrent != NULL)
-					{
-						fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-						pCurrent = pCurrent->next;
-					}
-					fclose(pf);
-					pf = NULL;*/
 					return;
 				}
 				pPrev = pCurrent;
@@ -224,14 +204,6 @@ void Remove_Studentdata(struct LinkNode* Student)
 					pPrev = Student;
 					pCurrent = Student->next;
 					ptem1 = Student->next;
-					/*//将新的链表写入文件
-					while (pCurrent != NULL)
-					{
-						fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-						pCurrent = pCurrent->next;
-					}
-					fclose(pf);
-					pf = NULL;*/
 					return;
 				}
 				pPrev = pCurrent;
@@ -295,14 +267,6 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode** pHead)
 {
 	if (Student == NULL)
 		return;
-
-	/*//打开文件
-	FILE* pf = fopen("Students'data.txt", "w");
-	if (pf == NULL)
-	{
-		printf("文件错误！\n");
-		exit(1);
-	}*/
 
 	struct LinkNode* pCurrent = Student->next;
 	
@@ -373,14 +337,6 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode** pHead)
 						} while (sign1);
 						printf("修改成功！\n");
 						*pHead = Student;
-						/*//将新数据写入文件
-						while (pCurrent != NULL)
-						{
-							fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-							pCurrent = pCurrent->next;
-						}
-						fclose(pf);
-						pf = NULL;*/
 						return;
 					}
 					//更新指针指向
@@ -448,14 +404,6 @@ void Change_Studentdata(struct LinkNode* Student, struct LinkNode** pHead)
 						} while (sign1);
 						printf("修改成功！\n");
 						*pHead = Student;
-						/*//将新数据写入文件
-						while (pCurrent != NULL)
-						{
-							fprintf(pf, "%-8d%-8s%.2lf\n", pCurrent->ID, pCurrent->name, pCurrent->score);
-							pCurrent = pCurrent->next;
-						}
-						fclose(pf);
-						pf = NULL;*/
 						return;
 					}
 					//更新指针指向
@@ -561,9 +509,10 @@ void Search_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 				while (pHead != NULL)
 				{
 					//找到便输出
-					printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
+					
 					if (strcmp(pHead->name, search_name) == 0)
 					{
+						printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
 						printf("%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
 						sign1 = 0;
 					}
@@ -599,14 +548,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 
 	if (Student == NULL)
 		return;
-
-	/*//打开文件
-	FILE* pf = fopen("Students'data.txt", "w");
-	if (pf == NULL)
-	{
-		printf("文件错误！\n");
-		exit(1);
-	}*/
 
 	//因为动态数组还没学习，此处用静态数组
 	int n = 0;
@@ -675,14 +616,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			//重置指针
 			pHead = Student->next;
 
-			/*//将新数据写入文件
-			while (pHead != NULL)
-			{
-				fprintf(pf, "%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
-				pHead = pHead->next;
-			}
-			fclose(pf);
-			pf = NULL;*/
 			return;
 			break;
 		case 2:
@@ -723,14 +656,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 			//重置指针
 			pHead = Student->next;
 
-			/*//将新数据写入文件
-			while (pHead != NULL)
-			{
-				fprintf(pf, "%-8d%-8s%.2lf\n", pHead->ID, pHead->name, pHead->score);
-				pHead = pHead->next;
-			}
-			fclose(pf);
-			pf = NULL;*/
 			return;
 			break;
 		case 0:
@@ -746,8 +671,6 @@ void Sort_Studentdata(struct LinkNode* Student, struct LinkNode* pHead)
 void Inputdata(struct LinkNode* Student, struct LinkNode* pHead)
 {
 	FILE* pf = fopen("Students'data.txt", "w");
-	if (pHead == NULL)
-		printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	LinkNode* tem = pHead->next;
 	while (tem != NULL)
 	{

@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include"LinkList.h"
+#include"LinkList_Student.h"
 int main()
 {
 	int input = 0;
@@ -11,6 +11,9 @@ int main()
 	//创建头部节点（用于遍历数组）
 	struct LinkNode* pHead = Student;
 
+	//加载文件数据到链表
+	Olddata(Student,&pPear);
+
 	do {
 		//打印菜单
 		menu();
@@ -18,7 +21,7 @@ int main()
 		switch (input)
 		{
 		case 1:
-			Input_Studentdata(Student, pHead, &pPear);
+			Input_Studentdata(Student,pHead,&pPear);
 			clear();
 			break;
 		case 2:
@@ -26,7 +29,7 @@ int main()
 			clear();
 			break;
 		case 3:
-			Change_Studentdata(Student, pHead);
+			Change_Studentdata(Student,&pHead);
 			clear();
 			break;
 		case 4:
@@ -38,7 +41,7 @@ int main()
 			clear();
 			break;
 		case 6:
-			Sort_Studentdata(Student, pHead);
+			Sort_Studentdata(Student,pHead);
 			clear();
 			break;
 		case 0:
@@ -48,5 +51,7 @@ int main()
 			printf("选择错误，请重新选择！\n");
 		}
 	} while (input);
+	//将链表录入文件
+	Inputdata(Student, pHead);
 	return 0;
 }
