@@ -46,7 +46,8 @@ int str[] = {
 	14, -1, -1,           // 第4层：左子节点
 	15, -1, -1,           // 第4层：右子节点
 	-1                    // 添加这个结束标记！
-}; int index = 0;
+};
+int index = 0;
 
 //函数定义
 //创建树
@@ -80,15 +81,15 @@ int main()
 //创建树
 void createTree(BiTree* T)
 {
-	int tem = str[index++];
-	if (tem == -1)
+	int ch = str[index++];
+	if (ch == -1)
 	{
 		*T = NULL;
 	}
-	else
+	else 
 	{
-		*T = (BiTree)malloc(sizeof(TreeNode));
-		(*T)->data = tem;
+		(*T) = (TreeNode*)malloc(sizeof(TreeNode));
+		(*T)->data = ch;
 		createTree(&(*T)->lchild);
 		createTree(&(*T)->rchild);
 	}
@@ -96,28 +97,22 @@ void createTree(BiTree* T)
 //创建空队列
 Queue* initQueue()
 {
-	Queue* q = (Queue*)malloc(sizeof(Queue));
-	q->data = (BiTree*)malloc(sizeof(BiTree) * MAXSIZE);
-	q->head = 0;
-	q->tail = 0;
-	return q;
+	Queue* queue = (Queue*)malloc(sizeof(Queue));
+	queue->data = (BiTree*)malloc(sizeof(BiTree) * MAXSIZE);
+	queue->head = 0;
+	queue->tail = 0;
+	return queue;
 }
 //入列
 void equeue(Queue* q, TreeNode* T)
 {
-	if ((q->tail + 1) % MAXSIZE == q->head)
-	{
-		printf("队列已满！\n");
-	}
-	else {
-		q->data[q->tail] = T;
-		q->tail = (q->tail + 1) % MAXSIZE;
-	}
+	q->data[q->tail] = T;
+	q->tail = (q->tail + 1) % MAXSIZE;
 }
 //判断队列是否为空
 int isEmpty(Queue* q)
 {
-	if (q->tail == q->head)
+	if (q->head == q->tail)
 	{
 		return 1;
 	}
@@ -126,44 +121,42 @@ int isEmpty(Queue* q)
 //统计队列中数量
 int queueSize(Queue* q)
 {
+	int len = 0;
 	int tem = q->head;
-	int count = 0;
+	if (tem == q->tail)
+	{
+		return 0;
+	}
 	while (tem != q->tail)
 	{
-		tem++;
-		count++;
+		len++;
+		tem = (tem + 1) % MAXSIZE;
 	}
-	return count;
+	return len;
 }
 //出队
 void dequeue(Queue* q, BiTree* curr)
 {
-	if (q->head == q->tail)
-	{
-		printf("空的！\n");
-		return;
-	}
-	*curr = q->data[q->head];
+	(*curr) = q->data[q->head];
 	q->head = (q->head + 1) % MAXSIZE;
 }
-
 //层序遍历，返回最深层层数
 int maxDepth(TreeNode* T)
 {
+	int depth = 0;
 	if (T == NULL)
 	{
-		return 0;
+		return depth;
 	}
-	int depth = 0;
+	TreeNode* curr = T;
 	Queue* q = initQueue();
-	equeue(q, T);
-
+	equeue(q, curr);
 	while (!isEmpty(q))
 	{
-		int count = queueSize(q);
-		while (count > 0)
+		int i;
+		int tem = queueSize(q);
+		for ( i= 1; i <= tem; i++)
 		{
-			TreeNode* curr;
 			dequeue(q, &curr);
 			if (curr->lchild != NULL)
 			{
@@ -173,7 +166,6 @@ int maxDepth(TreeNode* T)
 			{
 				equeue(q, curr->rchild);
 			}
-			count--;
 		}
 		depth++;
 	}
