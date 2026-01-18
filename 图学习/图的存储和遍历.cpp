@@ -78,7 +78,7 @@ int main()
 	return 0;
 }
 
-//函数声明
+//函数定义 
 //创建图
 void create_graph(Mat_Grph* G)
 {
@@ -137,7 +137,7 @@ void create_graph(Mat_Grph* G)
 		}
 	}
 }
-//广度优先遍历
+//深度优先遍历
 void dfs(Mat_Grph G, int n)
 {
 	visited[n] = 1;
@@ -151,7 +151,7 @@ void dfs(Mat_Grph G, int n)
 	}
 }
 
-//深度优先遍历
+//广度优先遍历
 void bfs(Mat_Grph G)
 {
 	int i = 0;
