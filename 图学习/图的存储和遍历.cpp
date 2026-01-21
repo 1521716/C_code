@@ -49,9 +49,9 @@ int tail = 0;
 //函数声明
 //创建图
 void create_graph(Mat_Grph* G);
-//广度优先遍历
-void dfs(Mat_Grph G, int n);
 //深度优先遍历
+void dfs(Mat_Grph G, int n);
+//广度优先遍历
 void bfs(Mat_Grph G);
 
 int main()
