@@ -8,52 +8,53 @@ typedef struct Student {
 	char name[20];
 	double score;
 }Student;
+//设置一个全局变量记录人数
+int count = 0;
 //清屏
 void clear();
 //打印菜单
 void menu();
 //输入学生数据
-void Inputdata(Student *data ,int *count);
+void Inputdata(Student* data);
 //显示学生数据
-void Putdata(Student* data, int *count);
+void Putdata(Student* data);
 //用学号查找学生数据
-void Search_ID(Student* data, int* count);
+void Search_ID(Student* data);
 //用姓名查找学生数据
-void Search_name(Student* data, int* count);
+void Search_name(Student* data);
 //查找学生数据
-void Searchdata(Student* data, int* count);
+void Searchdata(Student* data);
 //按照学号排序
-void Sort_ID(Student* data, int* count);
+void Sort_ID(Student* data);
 //按照成绩排序
-void Sort_score(Student* data, int* count);
+void Sort_score(Student* data);
 //排序
-void Sortdata(Student* data, int* count);
+void Sortdata(Student* data);
 //统计
-void Statistics(Student* data, int* count);
+void Statistics(Student* data);
 int main()
 {
 	int input = 0;
 	Student data[100] = { 0 };
-	int count = 0;
-	do{
+	do {
 		menu();
 		scanf("%d", &input);
 		switch (input)
 		{
 		case 1:
-			Inputdata(data, &count);
+			Inputdata(data);
 			break;
 		case 2:
-			Putdata(data, &count);
+			Putdata(data);
 			break;
 		case 3:
-			Searchdata(data,&count);
+			Searchdata(data);
 			break;
 		case 4:
-			Sortdata(data, &count);
+			Sortdata(data);
 			break;
 		case 5:
-			Statistics(data,&count);
+			Statistics(data);
 			break;
 		case 0:
 			printf("程序结束！\n");
@@ -77,22 +78,22 @@ void menu()
 	printf("*******************************************************************\n");
 	printf("请输入选择项：");
 }
-void Inputdata(Student* data, int* count)
+void Inputdata(Student* data)
 {
 	int n = 0, sign1 = 0;
-	Student* tem = data;
 	printf("请输入新增加的学生个数：");
 	scanf("%d", &n);
 	for (int i = 0; i < n; i++)
 	{
-		(*count)++;
+		Student tem;
+		count++;
 		do {
 			sign1 = 0;
-			printf("请输入第%d个学生的学号：", *count);
-			scanf("%d", &(tem->ID));
-			for (int j = 0; j < *count; j++)
+			printf("请输入第%d个学生的学号：", count);
+			scanf("%d", &tem.ID);
+			for (int j = 0; j < count; j++)
 			{
-				if (tem->ID == (data + j - 1)->ID)
+				if (tem.ID == (data + j - 1)->ID)
 				{
 					printf("该学号已存在，请重新输入！\n");
 					sign1 = 1;
@@ -100,39 +101,39 @@ void Inputdata(Student* data, int* count)
 				}
 			}
 		} while (sign1);
-		printf("请输入第%d个学生的姓名：", *count);
-		scanf("%s", tem->name);
+		printf("请输入第%d个学生的姓名：", count);
+		scanf("%s", tem.name);
 		do {
 			sign1 = 0;
-			printf("请输入第%d个学生的C语言成绩：", *count);
-			scanf("%lf", &(tem->score));
-			if (tem->score < 0 || tem->score>100)
+			printf("请输入第%d个学生的C语言成绩：", count);
+			scanf("%lf", &tem.score);
+			if (tem.score < 0 || tem.score>100)
 			{
 				printf("成绩输入不合法，请重新输入！\n");
 				sign1 = 1;
 			}
 		} while (sign1);
-		tem++;
+		data[count-1] = tem;
 	}
 	printf("数据录入已成功！\n");
 	clear();
 }
 
-void Putdata(Student* data, int *count)
+void Putdata(Student* data)
 {
 	printf("%-8s%-8s%s\n", "学号", "姓名", "C成绩");
-	for (int i = 0; i < *count; i++)
+	for (int i = 0; i < count; i++)
 	{
-		printf("%-8d%-8s%.2lf\n", (data+i)->ID ,(data+i)->name,(data+i)->score);
+		printf("%-8d%-8s%.2lf\n", (data + i)->ID, (data + i)->name, (data + i)->score);
 	}
 	clear();
 }
-void Search_ID(Student* data, int* count)
+void Search_ID(Student* data)
 {
-	int search = 0,result = 0;
+	int search = 0, result = 0;
 	printf("请输入要查找的学生的学号：");
 	scanf("%d", &search);
-	for (int i = 0; i < *count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		if (search == (data + i)->ID)
 		{
@@ -158,15 +159,15 @@ void Search_ID(Student* data, int* count)
 		printf("该学生信息未找到！\n");
 	clear();
 }
-void Search_name(Student* data, int* count)
+void Search_name(Student* data)
 {
 	char search_name[20] = { 0 };
 	int result = 0;
 	printf("请输入要查找的学生的姓名：");
 	scanf("%s", &search_name);
-	for (int i = 0; i < *count; i++)
+	for (int i = 0; i < count; i++)
 	{
-		if (strcmp(search_name,(data+i)->name)==0)
+		if (strcmp(search_name, (data + i)->name) == 0)
 		{
 			if (i == 0)
 			{
@@ -190,7 +191,7 @@ void Search_name(Student* data, int* count)
 		printf("该学生信息未找到！\n");
 	clear();
 }
-void Searchdata(Student* data, int* count)
+void Searchdata(Student* data)
 {
 	int select = 0;
 	do {
@@ -199,10 +200,10 @@ void Searchdata(Student* data, int* count)
 		switch (select)
 		{
 		case 1:
-			Search_ID(data,count);
+			Search_ID(data);
 			break;
 		case 2:
-			Search_name(data, count);
+			Search_name(data);
 			break;
 		case 0:
 			printf("查找程序结束！\n");
@@ -214,12 +215,12 @@ void Searchdata(Student* data, int* count)
 		}
 	} while (select);
 }
-void Sort_ID(Student* data, int* count)
+void Sort_ID(Student* data)
 {
 	printf("排序后的结果为：\n");
-	for (int i = 0; i < *count - 1; i++)
+	for (int i = 0; i < count - 1; i++)
 	{
-		for (int j = 0; j < *count - 1 - i; j++)
+		for (int j = 0; j < count - 1 - i; j++)
 		{
 			if ((data + j)->ID > (data + j + 1)->ID)
 			{
@@ -236,14 +237,14 @@ void Sort_ID(Student* data, int* count)
 			}
 		}
 	}
-	Putdata(data,count);
+	Putdata(data);
 }
-void Sort_score(Student* data, int* count)
+void Sort_score(Student* data)
 {
 	printf("排序后的结果为：\n");
-	for (int i = 0; i < *count - 1; i++)
+	for (int i = 0; i < count - 1; i++)
 	{
-		for (int j = 0; j < *count - 1 - i; j++)
+		for (int j = 0; j < count - 1 - i; j++)
 		{
 			if ((data + j)->score < (data + j + 1)->score)
 			{
@@ -260,9 +261,9 @@ void Sort_score(Student* data, int* count)
 			}
 		}
 	}
-	Putdata(data, count);
+	Putdata(data);
 }
-void Sortdata(Student* data, int* count)
+void Sortdata(Student* data)
 {
 	int select = 0;
 	do {
@@ -271,10 +272,10 @@ void Sortdata(Student* data, int* count)
 		switch (select)
 		{
 		case 1:
-			Sort_ID(data, count);
+			Sort_ID(data);
 			break;
 		case 2:
-			Sort_score(data, count);
+			Sort_score(data);
 			break;
 		case 0:
 			printf("排序程序结束！\n");
@@ -286,10 +287,10 @@ void Sortdata(Student* data, int* count)
 		}
 	} while (select);
 }
-void Statistics(Student* data, int* count)
+void Statistics(Student* data)
 {
 	double max = data->score, min = data->score, sum = 0;
-	for (int i = 0; i < *count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		if (max < (data + i)->score)
 			max = (data + i)->score;
@@ -299,12 +300,12 @@ void Statistics(Student* data, int* count)
 	}
 	printf("**********************************************************\n");
 	printf("成绩统计结果：\n");
-	printf("%-18s%d\n", "学生总数：", *count);
+	printf("%-18s%d\n", "学生总数：", count);
 	printf("%-18s%.2lf\n", "最高分：", max);
 	printf("%-18s%.2lf\n", "最低分：", min);
-	printf("%-18s%.2lf\n", "平均成绩：", sum/(*count));
+	printf("%-18s%.2lf\n", "平均成绩：", sum / count);
 	int A = 0, B = 0, C = 0, D = 0, E = 0;
-	for (int j = 0; j < *count; j++)
+	for (int j = 0; j < count; j++)
 	{
 		if ((data + j)->score >= 90 && (data + j)->score <= 100)
 			A++;
@@ -319,11 +320,11 @@ void Statistics(Student* data, int* count)
 	}
 	printf("%s", "成绩分布情况：\n");
 	printf("%8s%8s%8s\n", "分数段", "人数", "百分比");
-	printf("%8s%8d%8.2lf%%\n", "100-90", A, 100.0*A/(*count));
-	printf("%8s%8d%8.2lf%%\n", "89-80", B, 100.0 * B / (*count));
-	printf("%8s%8d%8.2lf%%\n", "79-70", C, 100.0 * C / (*count));
-	printf("%8s%8d%8.2lf%%\n", "69-60", D, 100.0 * D / (*count));
-	printf("%8s%8d%8.2lf%%\n", "59-0", E, 100.0 * E / (*count));
+	printf("%8s%8d%8.2lf%%\n", "100-90", A, 100.0 * A / count);
+	printf("%8s%8d%8.2lf%%\n", "89-80", B, 100.0 * B / count);
+	printf("%8s%8d%8.2lf%%\n", "79-70", C, 100.0 * C / count);
+	printf("%8s%8d%8.2lf%%\n", "69-60", D, 100.0 * D / count);
+	printf("%8s%8d%8.2lf%%\n", "59-0", E, 100.0 * E / count);
 	printf("**********************************************************\n");
 	clear();
 }
